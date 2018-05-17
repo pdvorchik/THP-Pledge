@@ -1,5 +1,6 @@
 var fullData$ = new Rx.BehaviorSubject();
 var filteredData$ = new Rx.BehaviorSubject();
+var selectedDistricts$ = new Rx.BehaviorSubject();
 
 // Setup state selector
 $( document ).ready(()=> {
@@ -61,3 +62,10 @@ function districtLookup(district) {
 function takenThePledge(record) {
   return record.pledged ? ' has taken the pledge.' : ' has not taken the pledge.'
 }
+
+lookupZip = function() {
+  firebasedb.ref('/zipToDistrict/' + $("#input--zipcode").val()).once('value').then(function(snapshot) {
+    const val = snapshot.val();
+    selectedDistricts$.next(Object.keys(val).map(key => val[key].abr + '-' + val[key].dis));
+  });
+};

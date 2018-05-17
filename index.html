@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet.snogylop@0.4.0/src/leaflet.snogylop.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans|Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <script src="https://use.fontawesome.com/316bfde8e8.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
@@ -19,7 +20,7 @@
   <script src="js/map.js"></script>
   <script src="js/table.js"></script>
   <link href="css/style.css" rel="stylesheet">
-  <!-- <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +':35729/livereload.js?snipver=1"></' + 'script>')</script>  -->
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </head>
 <body>
   <nav class="navbar navbar-light justify-content-between">
@@ -33,8 +34,8 @@
     <div class="row header-pledge--CTA">
       <div class="col-12 col-lg-7 offset-lg-4 col-xl-5 offset-xl-6 background-dark pt-4 pl-5 pb-4 pr-5 mt-lg-5 mb-lg-5">
         <h1>Take the Town Hall Pledge:</h1>
-        <p>Across party lines, voters in 2018 are demanding accessibility from their lawmakers. We expect those we entrust to represent us in Congress--and in our state and local government--to take time to listen to us.</p>
-        <p>We are asking every single candidate for public office this year to take the #townhallpledge to their constituents--to hold a minimum of four town hall meetings per year in office.</p>
+        <p>Across party lines, voters in 2018 are demanding accessibility from their lawmakers.</p>
+        <p>We are asking every single candidate for public office this year to take the #townhallpledge to their constituents&mdash;to hold a minimum of four town hall meetings per year in office.</p>
         <p>Ask candidates in your community to take the Pledge today!</p>
         <h4 class="text-right pt-2">Sign the pledge</h4>
       </div>
@@ -62,8 +63,9 @@
     <select id="select--state" class="d-inline-block">
       <option value="">All states</option>
     </select>
-    <!-- <h1 class="d-inline-block"> or </h1>
-    <input id="input--zipcode" type="text" placeholder="Zip code" maxlength="5"/> -->
+    <h1 class="d-inline-block"> or </h1>
+    <input id="input--zipcode" type="text" placeholder="Zip code" maxlength="5"/>
+    <h1 class="d-inline-block"></h1><i class="fas fa-search" onclick="lookupZip()"></i></div>
     <div id="table--state"></div>
   </div>
 </body>

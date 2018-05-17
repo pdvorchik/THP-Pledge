@@ -1,6 +1,8 @@
 $( document ).ready(()=> {
 
 var selectedFeatureId;
+var selectedDistrict;
+var districtIdByName;
 var map = L.map('map', { zoomSnap: 0.1, zoomControl: false});
 map.doubleClickZoom.disable();
 map.dragging.disable();
@@ -16,6 +18,7 @@ var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{
 });
 
 var districtLayer = new L.GeoJSON.AJAX("data/districts.geojson", {middleware: adaptDistricts}).bindTooltip(showDistrictTooltip);
+var districtLayerMask = new L.GeoJSON.AJAX("data/districts.geojson", {invert: true, interactive: false});
 var stateLayer = new L.GeoJSON.AJAX("data/states.geojson");
 var stateLayerMask = new L.GeoJSON.AJAX("data/states.geojson", {invert: true, interactive: false});
 tileLayer.addTo(map);
@@ -26,6 +29,11 @@ fullData$.subscribe(data => {
   if (!data) { return; }
   stateLayer.setStyle(setStateStyle);
   districtLayer.setStyle(setDistrictStyle);
+});
+
+selectedDistricts$.subscribe(data => {
+  if (!fullData$.getValue()) { return; }
+  selectDistricts(data);
 });
 
 // Zoom in and show districts when clicking on a state
@@ -87,6 +95,10 @@ function resetMap(e) {
     map.removeLayer(stateLayerMask);
     selectedFeatureId = false;
   }
+  if (map.hasLayer(districtLayerMask)) {
+    map.removeLayer(districtLayerMask);
+    selectedDistrict = false;
+  }
 
   return false;
 }
@@ -121,6 +133,25 @@ function setStateStyleMask(feature) {
       weight: 7,
       opacity: 1,
       color: '#ffffff',
+    }
+  } else {
+    return {
+      fillOpacity: 0,
+      weight: 2,
+      opacity: 0,
+      color: '#ffffff',
+    };
+  }
+}
+
+function setDistrictStyleMask(feature) {
+  if (feature.properties.DISTRICT === selectedDistrict) {
+    return {
+      fillColor: '#000000',
+      fillOpacity: .6,
+      weight: 7,
+      opacity: 1,
+      color: '#ff0000',
     }
   } else {
     return {
@@ -195,6 +226,24 @@ function adaptDistricts(district) {
     }
   });
   return district.features;
+}
+
+function selectDistricts(zipObjs) {
+  if (!map.hasLayer(districtLayerMask)) {
+    map.addLayer(districtLayerMask);
+    districtIdByName = districtLayerMask.getLayers().reduce((districts, layer) => {
+      districts[layer.feature.properties.DISTRICT] = layer._leaflet_id;
+      return districts;
+    }, {});
+  }
+
+  // TODO: Handle multiple districts
+  selectedDistrict = zipObjs[0];
+  let layer = districtLayerMask.getLayer(districtIdByName[zipObjs[0]])
+  map.fitBounds(layer.getBounds());
+  districtLayerMask.bringToFront();
+  districtLayerMask.setStyle(setDistrictStyleMask);
+
 }
 
 });
